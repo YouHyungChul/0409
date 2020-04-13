@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+    <script src="../js/lib.js"></script>
+    <script src="../Day-11/Rect.js"></script>
+    <script>
+        var container;
+        var bg=["red","orange","yellow","yellowgreen","blue","navy","purple"];
+        var rectArray = new Array();
+
+        var rectWidth=50; // 이퀄라이저 수 
+        var count = 30; // 등장할 이퀄라이저 수 
+        addEventListener("load",function(){
+            container = document.getElementById("container");
+            createRect();
+            gameLoop();
+            targetLoop();
+        });
+
+        //7개의 무지개색 이퀄라이져 바가 화면에 나오게 처리
+        function createRect(){
+            var n=0;
+            for(var i=0; i<count; i++){
+                var rect = new Rect(container,rectWidth,20,(i*rectWidth),0,bg[n],0.1,500);
+                
+                rectArray.push(rect);//배열에 추가
+                n++;
+                if(n>bg.length-1)n=0;
+
+                rectArray.push(rect); // 배열에 추가
+            }
+        }
+
+        //일정시간간격으로 목표지점을 재지정할 루프
+        function targetLoop(){
+            rectArray[getRandom(0,rectArray.length-1)].targetH=getRandom(1,500);
+
+            setTimeout(targetLoop,2);
+        }
+
+        function gameLoop(){
+            //사각형들의 redner () 호출!
+            for(var i=0; i<rectArray.length;i++){
+                rectArray[i].render();
+            }
+            setTimeout("gameLoop()",10);
+        }
+    </script>
+</head>
+<body>
+    <div id="container"></div>
+</body>
+</html>

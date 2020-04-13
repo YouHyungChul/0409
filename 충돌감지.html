@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{margin: 0px;}
+        #wrapper{
+            width:100%;
+            height: 600px;
+            background-color: wheat;
+        }
+    </style>
+    <script src="../js/lib.js"></script>
+    <script>
+        var box1,box2;
+        var flag=false //처음에는 들고다니지 않게.
+        window.addEventListener("load", function(){
+            createRect();
+
+            //마우스 이벤트 구현
+            box1.addEventListener("mousedown",function(){
+                flag=true;
+            });
+            document.body.addEventListener("mousemove",function(e){
+                if(flag){
+                    box1.style.left=event.clientX + "px";
+                    box1.style.top=event.clientY + "px";
+                    box1.innerText="x값:" + event.clientX+"\ny값:"+event.clientY;
+
+                    // 충돌체크!!!
+                    // 조건1) box1의 x축 + 너비를 더한값은 대상객체의 x축 이상일경우
+                    // 조건2) box1의 y축 + 높이를 더한값이 대상객체의 y축 이상일 경우
+                    // var x= parseInt(box1.style.left);
+                    // var width = parseInt(box1.style.width);
+                    // var y= parseInt(box1.style.top);
+                    // var height = parseInt(box1.style.height);
+                    // if((x+width>= parseInt(box2.style.left)) && (y+height)>=parseInt(box2.style.top)){
+                    //     box2.style.background="orange";
+                    // }else{
+                    //     box2.style.background="yellow";
+
+                    var result = collisionCheck(box1, box2);
+
+                    
+                    if(result){
+                        box2.style.background="orange";
+                    }else{
+                        box2.style.background="black";
+
+                    }
+
+                }
+
+            });
+        });
+        //추돌 감지용 사각형 만들기
+        function createRect(){
+            box1=document.createElement("div");
+            box2=document.createElement("div");
+            //스타일 적용
+            box1.style.width = 100+"px";
+            box2.style.width = 100+"px";
+            box1.style.height = 100+"px";
+            box2.style.height = 100+"px";
+            box1.style.background = "green";
+            box2.style.background = "yellow";
+
+            box1.style.position = "absolute";
+            box2.style.position = "absolute";
+
+            box1.style.left = 100 + "px";
+            box2.style.left = 600 + "px";
+
+            box1.style.top =150 +"px";
+            box2.style.top =150 +"px";
+
+            document.body.appendChild(box1);
+            document.body.appendChild(box2);
+
+            box2.innerText= "X값:" + parseInt(box2.style.left) + "\ny값:" + parseInt(box2.style.top);
+
+        }
+    </script>
+</head>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>

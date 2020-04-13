@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var fruit = ["사과","배","딸기"];
+
+        // "딸기"라는 스트링 객체는 배열내의 몇번째에 존재하는가 역추적"
+        var index = fruit.indexOf("딸기");
+        console.log(index);
+        fruit.splice(index,1); // index번째에 있는 요소 1개 삭제
+
+        console.log(fruit);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

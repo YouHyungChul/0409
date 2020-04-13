@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>갤럭시</title>
+    <style>
+        body{
+            position: relative;
+        }
+        #container{
+            width: 700px;
+            height: 500px;
+            background-image: url("../images/gallerxy/bg.png");
+            position: relative;
+        }
+    </style>
+    <script src="../js/lib.js"></script>
+    <script src="../Day-11/Ship.js"></script>
+    <script src="../Day-11/Enemy.js"></script>
+    <script src="../Day-11/Bullet.js"></script>
+    <script src="../Day-11/Rect.js"></script>
+    <script>
+        var container;
+        var ship;
+        var enemyArray = new Array();
+        var bulletArray = new Array();
+        var enemyPath=["../images/gallerxy/blue_king.png..","../images/gallerxy/enermy1.png",
+        "../images/gallerxy/enermy2.png","../images/gallerxy/green_king.png"];
+        window.addEventListener("load", function(){
+            container = document.getElementById("container");
+            createShip();   
+            
+            document.body.addEventListener("keydown",function(e){
+            switch(e.keyCode){
+                case 37:ship.velX=-2; break;
+                case 39:ship.velX=2;break;
+                //spcebar 누르면 총알처리
+                case 32:fire();break;
+                }
+            });
+            document.body.addEventListener("keyup", function(e){
+            switch(e.keyCode){
+                case 37:ship.velX=0;ship.velY=0; break;
+                case 39:ship.velX=0;ship.velY=0;break;
+                }
+            });
+            
+            createEnemy();
+
+
+            gameLoop();
+        });
+
+        function createShip(){
+            ship = new Ship(container);
+        }
+
+        function createEnemy(){
+            for(var i=0; i<9; i++){
+                // container, src,width,height,velX,velY,x,y
+                var enemy = new Enemy(container, enemyPath[getRandom(0,3)],50,50,0,0.5,(i*80),10);
+                enemyArray.push(enemy);
+            }
+        }
+
+        function fire(){
+            bulletArray.push(new Bullet(container,ship.x , ship.y));
+        }
+
+        function gameLoop(){
+            ship.tick();
+            ship.render();
+            for(var i=0; i<bulletArray.length;i++){
+
+                bulletArray[i].tick();
+
+            }
+            for(var i=0; i<bulletArray.length;i++){
+                bulletArray[i].render();
+            }
+
+            for(var i=0; i<enemyArray.length;i++){
+                enemyArray[i].tick();
+            }
+            for(var i=0; i<enemyArray.length;i++){
+                enemyArray[i].render();
+            }
+
+            for(var i=0; i<bulletArray.length; i++){
+                for(var j=0; j<enemyArray.length;j++){
+                    var result = collisionCheck(bulletArray[i].img, enemyArray[j].img);
+                    if(result){
+                        bulletArray[i].container.removeChild(bulletArray[i].img)
+                       enemyArray[j].container.removeChild(enemyArray[j].img);
+                    }
+                }
+            }
+
+            setTimeout("gameLoop()", 10);
+        }
+    </script>
+</head>
+<body>
+    <div id="container"></div>
+</body>
+</html>
